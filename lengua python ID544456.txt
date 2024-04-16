@@ -1,0 +1,61 @@
+import random
+import string
+import time
+import os
+
+def generate_grid(n):
+    values = list(string.ascii_letters + string.digits + "@#$") * (n * n // 4)
+    random.shuffle(values)
+    grid = []
+    for _ in range(n):
+        row = []
+        for _ in range(n):
+            row.append(random.choice(values))
+        grid.append(row)
+    return grid
+
+def display_grid(grid):
+    for row in grid:
+        print(" ".join(row))
+
+def hide_value(grid, value):
+    for row in grid:
+        if value in row:
+            row[row.index(value)] = "*"
+            break
+
+def reveal_value(grid, value):
+    for row in grid:
+        if "*" in row:
+            row[row.index("*")] = value
+
+def get_time_limit(n):
+    return max(3, 3 + 0.5 * (n - 3))
+
+def play_game():
+    n = int(input("Ingrese el tamaño o dimension de la cuadrícula (n*n): "))
+    grid = generate_grid(n)
+
+    print("Memoria de Valores\n")
+    display_grid(grid)
+    time_limit = get_time_limit(n)
+    time.sleep(time_limit)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    hidden_value = random.choice(grid[0])
+    hide_value(grid, hidden_value)
+
+    print("\nEncuentra el valor oculto:\n")
+    display_grid(grid)
+    guess = input("\nTu respuesta: ")
+    reveal_value(grid, hidden_value)
+    if guess == hidden_value:
+        print("¡Correcto! Has encontrado el valor oculto.")
+    else:
+        print(f"Incorrecto. El valor era {hidden_value}.")
+
+def main():
+    while True:
+        play_game()
+
+if __name__ == "__main__":
+    main()
