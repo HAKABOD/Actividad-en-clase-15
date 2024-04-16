@@ -1,0 +1,56 @@
+Algorithm generate_grid(n)
+    values = Concatenate(alphabet_characters, digits, special_characters) repeated (n * n // 4) times
+    Shuffle(values)
+    grid = Matrix of size n x n
+    For each row in grid
+        For each column in row
+            grid[row][column] = RandomlyChoose(values)
+    Return grid
+
+Algorithm display_grid(grid)
+    For each row in grid
+        Print Concatenate each element of row separated by a space
+
+Algorithm hide_value(grid, value)
+    For each row in grid
+        If value is in row
+            Replace value with "*" in row
+            Break
+
+Algorithm reveal_value(grid, value)
+    For each row in grid
+        If "*" is in row
+            Replace "*" with value in row
+
+Algorithm get_time_limit(n)
+    Return maximum(3, 3 + 0.5 * (n - 3))
+
+Algorithm play_game()
+    Write "Introduzca el tamaño del grid (n*n): "
+    Read n
+    grid = generate_grid(n)
+
+    Write "Memoria de Valores"
+    display_grid(grid)
+
+    time_limit = get_time_limit(n)
+    Sleep(time_limit)
+    Clear_screen
+
+    hidden_value = RandomlyChoose(grid[0])
+    hide_value(grid, hidden_value)
+
+    Write "Encuentra el valor oculto:"
+    display_grid(grid)
+    Write "Tu respuesta: "
+    Read guess
+    reveal_value(grid, hidden_value)
+
+    If guess equals hidden_value
+        Write "¡Correcto! Has encontrado el valor oculto."
+    Else
+        Write "Incorrecto. El valor era", hidden_value
+
+Algorithm main()
+    While True
+        play_game()
